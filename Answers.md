@@ -67,9 +67,9 @@ To make the network safer, I’d recommend using a firewall to control what traf
 <h2> Part 3: CI/CD Pipeline Setup (40 points) </h2>
 <h3> 1. Configuration Management with Ansible/Chef/Puppet/Terraform (15 points): </h3>
 
-**-Choose one configuration management tool (Ansible, Chef, or Puppet, terraform).**
-**-Write a script/playbook to automate the deployment of a web server on a virtual machine.**
-We use **Terraform** to create an **Azure VM** and install **NGINX** automatically.
+**-Choose one configuration management tool (Ansible, Chef, or Puppet, terraform).**  
+**-Write a script/playbook to automate the deployment of a web server on a virtual machine.**  
+We use **Terraform** to create an **Azure VM** and install **NGINX** automatically.  
 <body> 
     
      provider "azurerm" {
