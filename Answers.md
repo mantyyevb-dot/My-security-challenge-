@@ -106,7 +106,7 @@ To make the network safer, I’d recommend using a firewall to control what traf
 </body>
 <h3> 2. CI/CD Pipeline Configuration (25 points): </h3>
 
-**- Create a Jenkins pipeline configuration (Jenkinsfile) that includes stages for building, testing, and deploying a sample application to Azure.**  
+**- Create a Jenkins pipeline configuration (Jenkinsfile) that includes stages for building, testing, and deploying a sample application to Azure.**   
 **- Ensure that the pipeline includes security scanning as a step.**  
 <body>
          
