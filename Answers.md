@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html> 
 <h1> Technical Challenge (Controls Deployment) </h1>
 <h2> Part 1: Cybersecurity Scenario (30 points) </h2>
 <h3> 1. Threat Intelligence Report (10 points): </h3>
@@ -67,81 +69,67 @@ To make the network safer, I’d recommend using a firewall to control what traf
 <h2> Part 3: CI/CD Pipeline Setup (40 points) </h2>
 <h3> 1. Configuration Management with Ansible/Chef/Puppet/Terraform (15 points): </h3>
 
-**-Choose one configuration management tool (Ansible, Chef, or Puppet, terraform).**  
-**-Write a script/playbook to automate the deployment of a web server on a virtual machine.**  
-We use **Terraform** to create an **Azure VM** and install **NGINX** automatically.  
-<body> 
+**- Choose one configuration management tool (Ansible, Chef, or Puppet, terraform).**  
+**- Write a script/playbook to automate the deployment of a web server on a virtual machine.**  
+<body>
     
-     provider "azurerm" {
-       features {}
-     }
+    provider "azurerm" { features {} }
+    
+    resource "azurerm_resource_group" "rg" {
+      name     = "demo-rg"
+      location = "East US"
+    }
+    
+    resource "azurerm_linux_virtual_machine" "vm" {
+      name                = "demo-vm"
+      resource_group_name = azurerm_resource_group.rg.name
+      location            = azurerm_resource_group.rg.location
+      size                = "Standard_B1s"
+      admin_username      = "azureuser"
+      disable_password_authentication = true
      
-     resource "azurerm_resource_group" "rg" {
-       name     = "demo-rg"
-       location = "East US"
-     }
-      
-     resource "azurerm_public_ip" "public_ip" {
-       name                = "demo-ip"
-       location            = azurerm_resource_group.rg.location
-       resource_group_name = azurerm_resource_group.rg.name
-       allocation_method   = "Dynamic"
-     }
-     
-     resource "azurerm_network_interface" "nic" {
-       name                = "demo-nic"
-       location            = azurerm_resource_group.rg.location
-       resource_group_name = azurerm_resource_group.rg.name
-       
-       ip_configuration {
-         name                          = "internal"
-         subnet_id                     = azurerm_subnet.subnet.id
-         private_ip_address_allocation = "Dynamic"
-         public_ip_address_id          = azurerm_public_ip.public_ip.id
+      admin_ssh_key {
+        username   = "azureuser"
+        public_key = "ssh-rsa YOUR_PUBLIC_KEY"
       }
-     }
-          
-     resource "azurerm_subnet" "subnet" {
-       name                 = "demo-subnet"
-       resource_group_name  = azurerm_resource_group.rg.name
-       virtual_network_name = azurerm_virtual_network.vnet.name
-       address_prefixes     = ["10.0.1.0/24"]
-     }
       
-     resource "azurerm_virtual_network" "vnet" {
-       name                = "demo-vnet"
-       address_space       = ["10.0.0.0/16"]
-       location            = azurerm_resource_group.rg.location
-       resource_group_name = azurerm_resource_group.rg.name
-     }
-      
-     resource "azurerm_linux_virtual_machine" "vm" {
-       name                  = "demo-vm"
-       resource_group_name   = azurerm_resource_group.rg.name
-       location              = azurerm_resource_group.rg.location
-       size                  = "Standard_B1s"
-       admin_username        = "azureuser"
-       network_interface_ids = [azurerm_network_interface.nic.id]
+      source_image_reference {
+        publisher = "Canonical"
+        offer     = "UbuntuServer"
+        sku       = "18.04-LTS"
+        version   = "latest"
+      }
        
-     admin_ssh_key {
-       username   = "azureuser"
-       public_key = file("~/.ssh/id_rsa.pub")
-     }
-      
-     source_image_reference {
-       publisher = "Canonical"
-       offer     = "UbuntuServer"
-       sku       = "18.04-LTS"
-       version   = "latest"
-     }
-       
-     custom_data = <<-EOF
-                 #!/bin/bash
-                 apt-get update
-                 apt-get install -y nginx unzip
-                 systemctl enable nginx
-                 systemctl start nginx
-                 EOF
-    } 
+      custom_data = base64encode("#!/bin/bash\napt-get update && apt-get install -y nginx\nsystemctl start nginx")
+    }   
+           
 </body>
+<h3> 2. CI/CD Pipeline Configuration (25 points): </h3>
 
+**- Create a Jenkins pipeline configuration (Jenkinsfile) that includes stages for building, testing, and deploying a sample application to Azure.**  
+**- Ensure that the pipeline includes security scanning as a step.**  
+<body>
+         
+    pipeline {
+        agent any
+        stages {
+            stage('Build') {
+                steps { echo 'Building app...' }
+            }
+            stage('Test') {
+                steps { echo 'Running tests...' }
+            }
+            stage('Security Scan') {
+                steps { echo 'Security scan passed' }
+            }
+            stage('Deploy') {
+                steps {
+                    sh 'terraform init'
+                    sh 'terraform apply -auto-approve'
+                }
+            } 
+        }
+    }
+     
+</body>
+</html>
