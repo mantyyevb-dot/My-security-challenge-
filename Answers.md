@@ -33,11 +33,10 @@ To make the network safer, I’d recommend using a firewall to control what traf
 5. Limit the resources a container can use (CPU/memory).
    
 **- Implement one of these practices in a Dockerfile and provide the code.** 
-  <body>  
-    
+<pre><code>
     FROM nginx:alpine     
     USER 1001    
-  </body> 
+</code></pre>
 <h3> 2. Kubernetes Security Configuration (10 points): </h3>
 
 **- Describe three Kubernetes security features.**  
@@ -45,9 +44,8 @@ To make the network safer, I’d recommend using a firewall to control what traf
 2. **Network Policies:** only allow the right pods to talk to each other.  
 3. **Security Context:** set rules inside pods like not running as root or making files read-only.
    
-**- Write a Kubernetes YAML configuration that includes securityContext settings for a pod.**  
-  <body>  
-    
+**- Write a Kubernetes YAML configuration that includes securityContext settings for a pod.**    
+<pre><code>
      apiVersion: v1  
     kind: Pod  
     metadata:  
@@ -60,7 +58,7 @@ To make the network safer, I’d recommend using a firewall to control what traf
           runAsNonRoot: true  
           readOnlyRootFilesystem: true  
           allowPrivilegeEscalation: false
-  </body>
+</code></pre>
 <h3> 3. IaaS Security Measures (10 points): </h3>
 
 **- Explain the concept of Infrastructure as a Service (IaaS) and its security implications.**
@@ -71,8 +69,7 @@ To make the network safer, I’d recommend using a firewall to control what traf
 
 **- Choose one configuration management tool (Ansible, Chef, or Puppet, terraform).**  
 **- Write a script/playbook to automate the deployment of a web server on a virtual machine.**  
-<body>
-    
+<pre><code>
     provider "azurerm" { features {} }
     
     resource "azurerm_resource_group" "rg" {
@@ -101,15 +98,13 @@ To make the network safer, I’d recommend using a firewall to control what traf
       }
        
       custom_data = base64encode("#!/bin/bash\napt-get update && apt-get install -y nginx\nsystemctl start nginx")
-    }   
-           
-</body>
+    }  
+</code></pre>
 <h3> 2. CI/CD Pipeline Configuration (25 points): </h3>
 
 **- Create a Jenkins pipeline configuration (Jenkinsfile) that includes stages for building, testing, and deploying a sample application to Azure.**   
 **- Ensure that the pipeline includes security scanning as a step.**  
-<body>
-         
+<pre><code>
     pipeline {
         agent any
         stages {
@@ -130,6 +125,5 @@ To make the network safer, I’d recommend using a firewall to control what traf
             } 
         }
     }
-     
-</body>
+</code></pre>
 </html>
