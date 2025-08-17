@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html> 
+<html lang="en"> 
 <h1> Technical Challenge (Controls Deployment) </h1>
 <h2> Part 1: Cybersecurity Scenario (30 points) </h2>
 <h3> 1. Threat Intelligence Report (10 points): </h3>
